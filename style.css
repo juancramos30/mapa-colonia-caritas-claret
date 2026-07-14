@@ -1,10 +1,10 @@
 :root{
-  --bg:#0b1220;
-  --panel:#121b2e;
-  --panel-2:#0e1626;
-  --border:rgba(255,255,255,0.08);
-  --text:#e7edf5;
-  --text-dim:#8fa0b8;
+  --bg:#131316;
+  --panel:#1c1c20;
+  --panel-2:#1a1a1e;
+  --border:rgba(255,255,255,0.09);
+  --text:#f3f1ee;
+  --text-dim:#9c968d;
   --accent:#F08A01;
   --accent-dim:#7a4a0a;
   --green:#3ecf8e;
@@ -39,9 +39,11 @@ header{
   flex-shrink:0;
   background:#f7f5f2;
   border-radius:12px;
-  padding:6px 14px;
+  padding:8px 16px;
 }
-.logo-chip img{height:38px;width:auto;display:block;}
+.logo-chip img{width:auto;display:block;}
+.logo-caritas{height:112px;}
+.logo-parroquia{height:150px;filter:brightness(0.4) contrast(1.8);}
 .header-center{
   display:flex;
   align-items:center;
@@ -275,6 +277,7 @@ button.small{padding:8px 14px;min-height:40px;font-size:12.5px;border-radius:7px
   .toolbar{padding:8px 14px;gap:10px;}
   .header-center{order:3;flex-basis:100%;justify-content:center;}
   .search-wrap{min-width:0;max-width:220px;flex:1;}
-  .logo-chip{gap:8px;padding:5px 10px;}
-  .logo-chip img{height:30px;}
+  .logo-chip{gap:8px;padding:6px 12px;}
+  .logo-caritas{height:56px;}
+  .logo-parroquia{height:74px;}
 }

@@ -18,21 +18,18 @@
 <body>
 
 <header>
-  <div class="brand">
-    <div class="brand-logos">
-      <img src="assets/logo-caritas.png" alt="Cáritas de Nuevo Laredo A.C.">
-      <img src="assets/logo-parroquia.png" alt="Parroquia San Antonio María Claret">
+  <div class="logo-chip"><img src="assets/logo-caritas.png" alt="Cáritas de Nuevo Laredo A.C."></div>
+  <div class="header-center">
+    <div class="search-wrap">
+      <input id="searchInput" placeholder="Buscar una dirección o calle..." autocomplete="off">
+      <div class="search-results" id="searchResults" style="display:none;"></div>
     </div>
+    <div class="admin-area" id="adminArea"></div>
   </div>
-  <div class="admin-area" id="adminArea"></div>
+  <div class="logo-chip"><img src="assets/logo-parroquia.png" alt="Parroquia San Antonio María Claret"></div>
 </header>
 
 <div class="toolbar">
-  <div class="search-wrap">
-    <input id="searchInput" placeholder="Buscar una dirección o calle..." autocomplete="off">
-    <div class="search-results" id="searchResults" style="display:none;"></div>
-  </div>
-  <span class="toolbar-divider" aria-hidden="true"></span>
   <button id="btnPeopleSearch"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>Buscar persona</button>
   <button class="primary" id="btnAddPin"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>Agregar ubicación</button>
   <button id="btnDrawBoundary" style="display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/></svg>Delimitar colonia</button>

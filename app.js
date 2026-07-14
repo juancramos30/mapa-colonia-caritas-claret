@@ -153,7 +153,7 @@
     applyBoundaryRestriction(boundaryPoints);
     if(!boundaryPoints) return;
     boundaryLayer = L.polygon(points, {
-      color: '#3fd0c9', weight: 2, fillColor: '#3fd0c9', fillOpacity: 0.12
+      color: '#F08A01', weight: 2, fillColor: '#F08A01', fillOpacity: 0.12
     }).addTo(map);
   }
 
@@ -302,7 +302,7 @@
   function makeVertexIcon(){
     return L.divIcon({
       className: '',
-      html: '<div style="width:14px;height:14px;border-radius:50%;background:#3fd0c9;'
+      html: '<div style="width:14px;height:14px;border-radius:50%;background:#F08A01;'
           + 'border:2px solid rgba(255,255,255,0.9);box-shadow:0 1px 4px rgba(0,0,0,0.5);cursor:grab;"></div>',
       iconSize: [14,14],
       iconAnchor: [7,7]
@@ -322,7 +322,7 @@
   function redrawTempPolyline(){
     if(drawPolyline){ map.removeLayer(drawPolyline); }
     if(drawVertices.length > 1){
-      drawPolyline = L.polygon(drawVertices, { color:'#3fd0c9', weight:2, fillOpacity:0.08, dashArray:'6,6' }).addTo(map);
+      drawPolyline = L.polygon(drawVertices, { color:'#F08A01', weight:2, fillOpacity:0.08, dashArray:'6,6' }).addTo(map);
     }
   }
 

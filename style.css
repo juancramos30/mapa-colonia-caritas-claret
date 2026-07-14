@@ -34,25 +34,18 @@ header{
   flex-wrap:wrap;
   z-index:20;
 }
-.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
-.brand h1{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:19px;
-  margin:0;
-  letter-spacing:0.2px;
+.brand{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.brand-logos{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:14px;
+  background:#f7f5f2;
+  border-radius:12px;
+  padding:6px 14px;
 }
+.brand-logos img{height:38px;width:auto;display:block;}
 .icon{width:16px;height:16px;vertical-align:-3px;flex-shrink:0;}
-.icon-lg{width:21px;height:21px;vertical-align:-4px;}
 button .icon{margin-right:6px;}
-.brand .tag{
-  font-size:11px;
-  color:var(--text-dim);
-  border-left:1px solid var(--border);
-  padding-left:10px;
-}
 .admin-area{display:flex;align-items:center;gap:8px;}
 .badge{
   font-size:11px;
@@ -282,4 +275,6 @@ button.small{padding:8px 14px;min-height:40px;font-size:12.5px;border-radius:7px
   header{padding:12px 14px;}
   .toolbar{padding:8px 14px;gap:10px;}
   .search-wrap{min-width:100%;max-width:100%;}
+  .brand-logos{gap:10px;padding:5px 10px;}
+  .brand-logos img{height:30px;}
 }

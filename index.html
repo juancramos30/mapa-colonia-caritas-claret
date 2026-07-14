@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <title>Mapa de la Colonia</title>
+<meta name="description" content="Mapa colaborativo de la colonia: ubicaciones, contactos y límite del área compartidos en tiempo real con tu equipo.">
+<meta name="theme-color" content="#0b1220">
+<meta property="og:title" content="Mapa de la Colonia">
+<meta property="og:description" content="Ubicaciones y encargados por dirección, compartido en tiempo real.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Cpath d='M32 10c-9.4 0-17 7.6-17 17 0 12.7 17 27 17 27s17-14.3 17-27c0-9.4-7.6-17-17-17z' fill='%233fd0c9'/%3E%3Ccircle cx='32' cy='27' r='7' fill='%230b1220'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -73,7 +79,8 @@
     border:1px solid var(--border);
     background:var(--panel-2);
     color:var(--text);
-    padding:8px 13px;
+    padding:10px 16px;
+    min-height:44px;
     border-radius:9px;
     font-size:13px;
     font-weight:600;
@@ -86,7 +93,7 @@
   button.ghost{background:transparent;}
   button.danger{background:rgba(240,97,109,0.12);border-color:rgba(240,97,109,0.4);color:#ffb3ba;}
   button:disabled{opacity:0.4;cursor:not-allowed;}
-  button.small{padding:5px 9px;font-size:12px;border-radius:7px;}
+  button.small{padding:8px 14px;min-height:40px;font-size:12.5px;border-radius:7px;}
 
   .toolbar{
     display:flex;
@@ -99,15 +106,17 @@
     z-index:20;
     position:relative;
   }
+  .toolbar-divider{width:1px;align-self:stretch;min-height:28px;background:var(--border);margin:0 2px;}
   .search-wrap{position:relative;flex:1;min-width:220px;max-width:420px;}
   .search-wrap input{
     width:100%;
-    padding:8px 12px;
+    padding:12px 14px;
+    min-height:44px;
     border-radius:9px;
     border:1px solid var(--border);
     background:var(--panel);
     color:var(--text);
-    font-size:13px;
+    font-size:14px;
     font-family:'Inter',sans-serif;
   }
   .search-wrap input:focus{outline:none;border-color:var(--accent);}
@@ -257,6 +266,13 @@
 
   ::-webkit-scrollbar{width:8px;}
   ::-webkit-scrollbar-thumb{background:#233150;border-radius:8px;}
+
+  @media (max-width: 640px){
+    .toolbar-divider{display:none;}
+    header{padding:12px 14px;}
+    .toolbar{padding:8px 14px;gap:10px;}
+    .search-wrap{min-width:100%;max-width:100%;}
+  }
 </style>
 </head>
 <body>
@@ -274,7 +290,8 @@
     <input id="searchInput" placeholder="Buscar una dirección o calle..." autocomplete="off">
     <div class="search-results" id="searchResults" style="display:none;"></div>
   </div>
-  <button id="btnPeopleSearch">🔎 Buscar persona</button>
+  <span class="toolbar-divider" aria-hidden="true"></span>
+  <button id="btnPeopleSearch">👤 Buscar persona</button>
   <button class="primary" id="btnAddPin" style="display:none;">📍 Agregar ubicación</button>
   <button id="btnDrawBoundary" style="display:none;">✏️ Delimitar colonia</button>
   <button class="danger" id="btnDeleteBoundary" style="display:none;">Eliminar límite</button>

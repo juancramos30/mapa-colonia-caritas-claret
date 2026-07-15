@@ -48,7 +48,7 @@
       lat: pin.lat, lng: pin.lng, nombre: pin.nombre,
       telefono: pin.telefono || null, email: pin.email || null,
       notas: pin.notas || null, direccion: pin.direccion || null,
-      subido_por: pin.subidoPor, status: 'approved'
+      subido_por: pin.subidoPor, tipo: pin.tipo || 'general', status: 'approved'
     }).select().single();
     if(r.error){ showToast('No se pudo guardar la ubicación.'); return null; }
     return r.data;
@@ -151,8 +151,24 @@
     });
   }
 
+  function makeChurchIcon(){
+    return L.divIcon({
+      className: '',
+      html: '<svg width="28" height="32" viewBox="0 0 24 28" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.45));">'
+          + '<rect x="10.5" y="0" width="3" height="8" fill="#9E1D65"/>'
+          + '<rect x="8" y="2.5" width="8" height="3" fill="#9E1D65"/>'
+          + '<polygon points="2,14 12,7 22,14" fill="#9E1D65" stroke="white" stroke-width="1" stroke-linejoin="round"/>'
+          + '<rect x="4" y="14" width="16" height="12" fill="#9E1D65" stroke="white" stroke-width="1"/>'
+          + '<rect x="10" y="19" width="4" height="7" fill="white"/>'
+          + '</svg>',
+      iconSize: [28,32],
+      iconAnchor: [14,30]
+    });
+  }
+
   function renderApprovedPin(pin){
-    var marker = L.marker([pin.lat, pin.lng], { icon: makeDivIcon('#3ecf8e') }).addTo(map);
+    var icon = pin.tipo === 'iglesia' ? makeChurchIcon() : makeDivIcon('#3ecf8e');
+    var marker = L.marker([pin.lat, pin.lng], { icon: icon }).addTo(map);
     marker.bindPopup(popupHtml(pin));
     approvedMarkers[pin.id] = marker;
   }
@@ -401,6 +417,7 @@
 
   async function openPinModal(latlng){
     var overlay = document.getElementById('pinOverlay');
+    document.getElementById('fieldTipo').value = 'general';
     document.getElementById('fieldSubidoPor').value = '';
     document.getElementById('fieldNombre').value = '';
     document.getElementById('fieldTelefono').value = '';
@@ -433,6 +450,7 @@
       lng: pendingPinLatLng.lng,
       nombre: nombre,
       subidoPor: subidoPor,
+      tipo: document.getElementById('fieldTipo').value,
       telefono: document.getElementById('fieldTelefono').value.trim(),
       email: document.getElementById('fieldEmail').value.trim(),
       notas: document.getElementById('fieldNotas').value.trim(),

@@ -57,6 +57,10 @@
     var r = await sb.from('mapa_pins').delete().eq('id', id);
     return !r.error;
   }
+  async function updatePinLocationRemote(id, lat, lng){
+    var r = await sb.from('mapa_pins').update({ lat: lat, lng: lng }).eq('id', id);
+    return !r.error;
+  }
   async function adminExists(){
     var r = await sb.rpc('mapa_admin_exists');
     return !!r.data;
@@ -168,9 +172,27 @@
 
   function renderApprovedPin(pin){
     var icon = pin.tipo === 'iglesia' ? makeChurchIcon() : makeDivIcon('#3ecf8e');
-    var marker = L.marker([pin.lat, pin.lng], { icon: icon }).addTo(map);
+    var marker = L.marker([pin.lat, pin.lng], { icon: icon, draggable: isAdmin }).addTo(map);
     marker.bindPopup(popupHtml(pin));
+    marker.on('dragend', async function(){
+      var ll = marker.getLatLng();
+      var ok = await updatePinLocationRemote(pin.id, ll.lat, ll.lng);
+      if(ok){
+        pin.lat = ll.lat;
+        pin.lng = ll.lng;
+        showToast('Ubicación movida.');
+      } else {
+        showToast('No se pudo mover la ubicación.');
+      }
+    });
     approvedMarkers[pin.id] = marker;
+  }
+
+  function setPinsDraggable(state){
+    Object.keys(approvedMarkers).forEach(function(id){
+      var marker = approvedMarkers[id];
+      if(state) marker.dragging.enable(); else marker.dragging.disable();
+    });
   }
   function popupHtml(pin){
     return '<div class="popup-title">'+escapeHtml(pin.nombre||'Sin nombre')+'</div>'
@@ -296,6 +318,7 @@
     document.getElementById('btnDrawBoundary').style.display = isAdmin ? 'inline-block' : 'none';
     document.getElementById('btnDeleteBoundary').style.display = (isAdmin && boundaryPoints) ? 'inline-block' : 'none';
     document.body.classList.toggle('is-admin', isAdmin);
+    setPinsDraggable(isAdmin);
   }
 
   async function openAdminModal(){

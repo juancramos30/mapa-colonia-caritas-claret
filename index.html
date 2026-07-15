@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mapa de la Colonia</title>
 <meta name="description" content="Mapa colaborativo de la colonia: ubicaciones, contactos y límite del área compartidos en tiempo real con tu equipo.">
 <meta name="theme-color" content="#faf8f5">
@@ -27,7 +27,7 @@
   <div class="header-center">
     <div class="search-wrap">
       <input id="searchInput" placeholder="Buscar una dirección o calle..." autocomplete="off">
-      <div class="search-results" id="searchResults" style="display:none;"></div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Sugerencias de dirección" style="display:none;"></div>
     </div>
   </div>
   <img class="logo-parroquia" src="assets/logo-parroquia.png" alt="Parroquia San Antonio María Claret">
@@ -56,32 +56,32 @@
 
 <!-- Modal: agregar pin -->
 <div class="overlay" id="pinOverlay">
-  <div class="modal modal-wrap">
-    <button class="close-x" data-close="pinOverlay">✕</button>
-    <h2>Datos de la ubicación</h2>
+  <div class="modal modal-wrap" role="dialog" aria-modal="true" aria-labelledby="pinModalTitle">
+    <button class="close-x" data-close="pinOverlay" aria-label="Cerrar">✕</button>
+    <h2 id="pinModalTitle">Datos de la ubicación</h2>
     <p class="sub" id="pinAddressLabel">Dirección detectada...</p>
     <div class="field">
-      <label>Tu nombre (quien registra) *</label>
-      <input id="fieldSubidoPor" placeholder="Ej. Juan Ramos">
+      <label for="fieldSubidoPor">Tu nombre (quien registra) *</label>
+      <input id="fieldSubidoPor" placeholder="Ej. Juan Ramos" required>
     </div>
     <div class="field">
-      <label>Nombre del encargado *</label>
-      <input id="fieldNombre" placeholder="Ej. María López">
+      <label for="fieldNombre">Nombre del encargado *</label>
+      <input id="fieldNombre" placeholder="Ej. María López" required>
     </div>
     <div class="field">
-      <label>Teléfono</label>
+      <label for="fieldTelefono">Teléfono</label>
       <input id="fieldTelefono" placeholder="Ej. 555 123 4567">
     </div>
     <div class="field">
-      <label>Correo electrónico</label>
+      <label for="fieldEmail">Correo electrónico</label>
       <input id="fieldEmail" type="email" placeholder="Ej. correo@ejemplo.com">
     </div>
     <div class="field">
-      <label>Notas</label>
+      <label for="fieldNotas">Notas</label>
       <textarea id="fieldNotas" rows="3" placeholder="Referencias, horarios, observaciones..."></textarea>
     </div>
     <div class="field">
-      <label>Dirección</label>
+      <label for="fieldDireccion">Dirección</label>
       <input id="fieldDireccion" placeholder="Dirección">
     </div>
     <div class="modal-actions">
@@ -93,16 +93,16 @@
 
 <!-- Modal: administrador -->
 <div class="overlay" id="adminOverlay">
-  <div class="modal modal-wrap">
-    <button class="close-x" data-close="adminOverlay">✕</button>
+  <div class="modal modal-wrap" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+    <button class="close-x" data-close="adminOverlay" aria-label="Cerrar">✕</button>
     <h2 id="adminModalTitle">Modo administrador</h2>
     <p class="sub" id="adminModalSub">Ingresa el PIN de administrador.</p>
     <div class="field">
-      <label id="pinLabel1">PIN</label>
-      <input id="fieldPin1" type="text" inputmode="numeric" autocomplete="off" placeholder="••••">
+      <label id="pinLabel1" for="fieldPin1">PIN</label>
+      <input id="fieldPin1" type="text" inputmode="numeric" autocomplete="off" placeholder="••••" required>
     </div>
     <div class="field" id="pinConfirmWrap" style="display:none;">
-      <label>Confirma el PIN</label>
+      <label for="fieldPin2">Confirma el PIN</label>
       <input id="fieldPin2" type="text" inputmode="numeric" autocomplete="off" placeholder="••••">
     </div>
     <div class="modal-actions">
@@ -114,15 +114,15 @@
 
 <!-- Modal: buscar persona -->
 <div class="overlay" id="peopleOverlay">
-  <div class="modal modal-wrap">
-    <button class="close-x" data-close="peopleOverlay">✕</button>
-    <h2>Buscar persona</h2>
+  <div class="modal modal-wrap" role="dialog" aria-modal="true" aria-labelledby="peopleModalTitle">
+    <button class="close-x" data-close="peopleOverlay" aria-label="Cerrar">✕</button>
+    <h2 id="peopleModalTitle">Buscar persona</h2>
     <p class="sub">Selecciona un nombre para ir a su ubicación en el mapa.</p>
-    <div class="pending-list" id="peopleList"></div>
+    <div class="pending-list" id="peopleList" role="listbox" aria-label="Personas registradas"></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

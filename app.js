@@ -73,6 +73,58 @@
     setTimeout(function(){ t.classList.remove('show'); }, 2400);
   }
 
+  // ---------- Modal helpers (foco y teclado) ----------
+  var lastFocusedEl = null;
+
+  function getFocusable(container){
+    return Array.prototype.slice.call(
+      container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    ).filter(function(el){ return el.offsetParent !== null; });
+  }
+
+  function openModal(overlay){
+    lastFocusedEl = document.activeElement;
+    overlay.classList.add('show');
+    var focusables = getFocusable(overlay);
+    if(focusables.length) focusables[0].focus();
+  }
+
+  function closeModal(overlay){
+    overlay.classList.remove('show');
+    if(lastFocusedEl && typeof lastFocusedEl.focus === 'function') lastFocusedEl.focus();
+  }
+
+  document.addEventListener('keydown', function(e){
+    var openOverlay = document.querySelector('.overlay.show');
+    if(!openOverlay) return;
+    if(e.key === 'Escape'){
+      closeModal(openOverlay);
+      return;
+    }
+    if(e.key === 'Tab'){
+      var focusables = getFocusable(openOverlay);
+      if(focusables.length === 0) return;
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if(e.shiftKey && document.activeElement === first){
+        e.preventDefault(); last.focus();
+      } else if(!e.shiftKey && document.activeElement === last){
+        e.preventDefault(); first.focus();
+      }
+    }
+  });
+
+  function makeActivatable(el, fn){
+    el.tabIndex = 0;
+    if(!el.hasAttribute('role')) el.setAttribute('role', 'option');
+    el.addEventListener('click', fn);
+    el.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        fn();
+      }
+    });
+  }
+
   // ---------- Map init ----------
   function initMap(){
     map = L.map('map', { zoomControl: true, minZoom: 3 }).setView([27.4761, -99.5164], 14);
@@ -229,7 +281,7 @@
       confirmWrap.style.display = 'none';
       overlay.dataset.setup = 'false';
     }
-    overlay.classList.add('show');
+    openModal(overlay);
   }
 
   document.getElementById('btnAdminSubmit').addEventListener('click', async function(){
@@ -244,7 +296,7 @@
       var created = await adminSetup(pin1);
       if(created){
         isAdmin = true;
-        overlay.classList.remove('show');
+        closeModal(overlay);
         refreshAdminArea();
         showToast('PIN de administrador creado. Ahora tienes acceso.');
       } else {
@@ -254,7 +306,7 @@
       var valid = await adminVerify(pin1);
       if(valid){
         isAdmin = true;
-        overlay.classList.remove('show');
+        closeModal(overlay);
         refreshAdminArea();
         showToast('Bienvenido, administrador.');
       } else {
@@ -335,7 +387,7 @@
     document.getElementById('fieldNotas').value = '';
     document.getElementById('fieldDireccion').value = '';
     document.getElementById('pinAddressLabel').textContent = 'Buscando dirección...';
-    overlay.classList.add('show');
+    openModal(overlay);
 
     try{
       var res = await fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+latlng.lat+'&lon='+latlng.lng+'&zoom=18&addressdetails=1');
@@ -373,7 +425,7 @@
       showToast('Ubicación guardada.');
     }
 
-    document.getElementById('pinOverlay').classList.remove('show');
+    closeModal(document.getElementById('pinOverlay'));
     pendingPinLatLng = null;
     exitMode();
   });
@@ -436,7 +488,7 @@
   // ---------- People search ----------
   document.getElementById('btnPeopleSearch').addEventListener('click', function(){
     renderPeopleList();
-    document.getElementById('peopleOverlay').classList.add('show');
+    openModal(document.getElementById('peopleOverlay'));
   });
 
   function renderPeopleList(){
@@ -456,12 +508,12 @@
         + (pin.telefono ? ICONS.phone+' '+escapeHtml(pin.telefono)+'<br>' : '')
         + (pin.email ? ICONS.mail+' '+escapeHtml(pin.email) : '')
         + '</div>';
-      item.onclick = function(){
-        document.getElementById('peopleOverlay').classList.remove('show');
+      makeActivatable(item, function(){
+        closeModal(document.getElementById('peopleOverlay'));
         map.setView([pin.lat, pin.lng], 18);
         var marker = approvedMarkers[pin.id];
         if(marker) marker.openPopup();
-      };
+      });
       container.appendChild(item);
     });
   }
@@ -490,11 +542,11 @@
           var div = document.createElement('div');
           div.innerHTML = '<div style="font-weight:700;color:var(--text);">'+escapeHtml(casa)+'</div>'
             + '<div style="font-size:11px;margin-top:2px;">'+escapeHtml(zona)+'</div>';
-          div.onclick = function(){
+          makeActivatable(div, function(){
             map.setView([parseFloat(place.lat), parseFloat(place.lon)], 18);
             resultsBox.style.display = 'none';
             document.getElementById('searchInput').value = place.display_name;
-          };
+          });
           resultsBox.appendChild(div);
         });
         resultsBox.style.display = 'block';
@@ -511,12 +563,12 @@
   // ---------- Modal close helpers ----------
   document.querySelectorAll('[data-close]').forEach(function(btn){
     btn.addEventListener('click', function(){
-      document.getElementById(btn.getAttribute('data-close')).classList.remove('show');
+      closeModal(document.getElementById(btn.getAttribute('data-close')));
     });
   });
   document.querySelectorAll('.overlay').forEach(function(ov){
     ov.addEventListener('click', function(e){
-      if(e.target === ov) ov.classList.remove('show');
+      if(e.target === ov) closeModal(ov);
     });
   });
 

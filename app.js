@@ -154,15 +154,15 @@
   function makeChurchIcon(){
     return L.divIcon({
       className: '',
-      html: '<svg width="28" height="32" viewBox="0 0 24 28" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.45));">'
+      html: '<svg width="70" height="80" viewBox="0 0 24 28" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.45));">'
           + '<rect x="10.5" y="0" width="3" height="8" fill="#9E1D65"/>'
           + '<rect x="8" y="2.5" width="8" height="3" fill="#9E1D65"/>'
           + '<polygon points="2,14 12,7 22,14" fill="#9E1D65" stroke="white" stroke-width="1" stroke-linejoin="round"/>'
           + '<rect x="4" y="14" width="16" height="12" fill="#9E1D65" stroke="white" stroke-width="1"/>'
           + '<rect x="10" y="19" width="4" height="7" fill="white"/>'
           + '</svg>',
-      iconSize: [28,32],
-      iconAnchor: [14,30]
+      iconSize: [70,80],
+      iconAnchor: [35,75]
     });
   }
 

@@ -417,7 +417,6 @@
 
   async function openPinModal(latlng){
     var overlay = document.getElementById('pinOverlay');
-    document.getElementById('fieldTipo').value = 'general';
     document.getElementById('fieldSubidoPor').value = '';
     document.getElementById('fieldNombre').value = '';
     document.getElementById('fieldTelefono').value = '';
@@ -450,7 +449,6 @@
       lng: pendingPinLatLng.lng,
       nombre: nombre,
       subidoPor: subidoPor,
-      tipo: document.getElementById('fieldTipo').value,
       telefono: document.getElementById('fieldTelefono').value.trim(),
       email: document.getElementById('fieldEmail').value.trim(),
       notas: document.getElementById('fieldNotas').value.trim(),

@@ -53,6 +53,10 @@
     if(r.error){ showToast('No se pudo guardar la ubicación.'); return null; }
     return r.data;
   }
+  async function deletePinRemote(id){
+    var r = await sb.from('mapa_pins').delete().eq('id', id);
+    return !r.error;
+  }
   async function adminExists(){
     var r = await sb.rpc('mapa_admin_exists');
     return !!r.data;
@@ -158,8 +162,24 @@
       + (pin.telefono ? '<div class="popup-line">'+ICONS.phone+' '+escapeHtml(pin.telefono)+'</div>' : '')
       + (pin.email ? '<div class="popup-line">'+ICONS.mail+' '+escapeHtml(pin.email)+'</div>' : '')
       + (pin.notas ? '<div class="popup-line">'+escapeHtml(pin.notas)+'</div>' : '')
-      + (pin.subido_por ? '<div class="popup-line">'+ICONS.user+' Registrado por '+escapeHtml(pin.subido_por)+'</div>' : '');
+      + (pin.subido_por ? '<div class="popup-line">'+ICONS.user+' Registrado por '+escapeHtml(pin.subido_por)+'</div>' : '')
+      + '<button class="popup-delete" data-pin-id="'+pin.id+'" aria-label="Eliminar esta ubicación">Eliminar</button>';
   }
+
+  async function deletePinFromMap(id){
+    if(!confirm('¿Eliminar esta ubicación del mapa?')) return;
+    var ok = await deletePinRemote(id);
+    if(ok){
+      if(approvedMarkers[id]){ map.removeLayer(approvedMarkers[id]); delete approvedMarkers[id]; }
+      approvedPins = approvedPins.filter(function(p){ return p.id !== id; });
+      showToast('Ubicación eliminada.');
+    }
+  }
+
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.popup-delete');
+    if(btn) deletePinFromMap(btn.getAttribute('data-pin-id'));
+  });
   function escapeHtml(s){
     var d = document.createElement('div');
     d.textContent = s;
@@ -259,6 +279,7 @@
     }
     document.getElementById('btnDrawBoundary').style.display = isAdmin ? 'inline-block' : 'none';
     document.getElementById('btnDeleteBoundary').style.display = (isAdmin && boundaryPoints) ? 'inline-block' : 'none';
+    document.body.classList.toggle('is-admin', isAdmin);
   }
 
   async function openAdminModal(){

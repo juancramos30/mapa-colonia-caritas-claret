@@ -202,7 +202,7 @@
         showToast('Sesión de administrador cerrada.');
       };
     } else {
-      el.innerHTML = '<button class="small" id="btnAdminMode">'+ICONS.lock+' Modo administrador</button>';
+      el.innerHTML = '<button class="icon-only" id="btnAdminMode" title="Modo administrador" aria-label="Modo administrador">'+ICONS.lock+'</button>';
       document.getElementById('btnAdminMode').onclick = openAdminModal;
     }
     document.getElementById('btnDrawBoundary').style.display = isAdmin ? 'inline-block' : 'none';

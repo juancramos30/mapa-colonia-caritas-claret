@@ -47,6 +47,8 @@ header{
 }
 .icon{width:16px;height:16px;vertical-align:-3px;flex-shrink:0;}
 button .icon{margin-right:6px;}
+button.icon-only{padding:10px;min-width:44px;}
+button.icon-only .icon{margin-right:0;width:18px;height:18px;}
 .admin-area{display:flex;align-items:center;gap:8px;}
 .badge{
   font-size:11px;
